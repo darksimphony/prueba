@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f0e7">
+  <meta name="description" content="Una guía de campo para descubrir las aves comunes de la Comunidad de Madrid.">
+  <title>Aves de Madrid — guía de campo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="brand" href="#inicio" aria-label="Aves de Madrid, inicio">
+      <span class="brand-mark" aria-hidden="true">✳</span>
+      <span class="brand-name">CUADERNO DE CAMPO</span>
+    </a>
+    <span class="top-note">40°25′ N &nbsp; 3°42′ O · MADRID</span>
+  </header>
+
+  <main class="shell" id="inicio">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Ornitología de proximidad · N.º 01</p>
+        <h1 id="page-title">Aves de Madrid</h1>
+        <p class="intro-copy">Una guía para mirar más cerca: del gorrión en la plaza al cernícalo sobre los tejados. Ocho vecinos alados que puedes encontrar sin salir de la ciudad.</p>
+      </div>
+      <aside class="field-note" aria-label="Consejo de observación">
+        <span class="sun" aria-hidden="true">☼</span>
+        <div>
+          <strong>La mejor hora</strong>
+          <span>Primeras horas de la mañana</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="feature" aria-label="Ave destacada">
+      <div class="feature-copy">
+        <span class="feature-label">Ave destacada · todo el año</span>
+        <h2>Pequeño cuerpo,<br>gran personalidad.</h2>
+        <p>El petirrojo se deja ver en parques y jardines. Su pecho anaranjado es una pista fácil incluso entre las hojas.</p>
+        <button class="feature-link" data-open="petirrojo" type="button">Conocer al petirrojo <span aria-hidden="true">→</span></button>
+      </div>
+      <div class="feature-image">
+        <img src="https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=1100&q=85" alt="Ave silvestre posada en una rama entre hojas">
+      </div>
+    </section>
+
+    <section class="sightings" aria-labelledby="sightings-title">
+      <div class="sightings-head">
+        <div>
+          <p class="section-kicker">Madrid · mapa de calor</p>
+          <h2 id="sightings-title">¿Dónde se dejan ver?</h2>
+        </div>
+        <p class="sightings-note">Puntos de ejemplo para explorar el mapa. No representan observaciones reales ni datos oficiales.</p>
+      </div>
+
+      <div class="map-toolbar">
+        <span class="map-caption" id="map-count" aria-live="polite">Muestra ilustrativa · 16 puntos</span>
+        <label>
+          <span class="sr-only">Filtrar mapa por especie</span>
+          <select class="species-select" id="map-species">
+            <option value="todas">Todas las especies</option>
+            <option value="gorrión">Gorrión común</option>
+            <option value="mirlo">Mirlo común</option>
+            <option value="urraca">Urraca común</option>
+            <option value="carbonero">Carbonero común</option>
+            <option value="petirrojo">Petirrojo europeo</option>
+            <option value="cernícalo">Cernícalo vulgar</option>
+            <option value="cigüeña">Cigüeña blanca</option>
+            <option value="golondrina">Golondrina común</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="sightings-map" role="img" aria-label="Mapa de calor de demostración con zonas de avistamiento en Madrid"></div>
+      <div class="map-error" id="map-error" role="status">No se pudo cargar el mapa. Comprueba tu conexión a Internet.</div>
+      <div class="map-legend"><span>Menos</span><span class="legend-gradient" aria-hidden="true"></span><span>Más puntos de ejemplo</span></div>
+    </section>
+
+    <section class="catalog" aria-labelledby="catalog-title">
+      <div class="catalog-heading">
+        <div>
+          <p class="section-kicker">Tu guía de bolsillo</p>
+          <h2 id="catalog-title">Encuentra a tu vecina</h2>
+        </div>
+        <span class="count" id="result-count" aria-live="polite">8 especies</span>
+      </div>
+
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filtrar aves por hábitat">
+          <button class="filter" type="button" aria-pressed="true" data-filter="todas">Todas</button>
+          <button class="filter" type="button" aria-pressed="false" data-filter="parques">Parques y jardines</button>
+          <button class="filter" type="button" aria-pressed="false" data-filter="urbano">Ciudad</button>
+          <button class="filter" type="button" aria-pressed="false" data-filter="agua">Riberas y humedales</button>
+        </div>
+        <label class="search-wrap">
+          <span aria-hidden="true">⌕</span>
+          <input class="search" id="bird-search" type="search" placeholder="Buscar especie…" aria-label="Buscar especie">
+        </label>
+      </div>
+
+      <div class="bird-grid" id="bird-grid"></div>
+      <div class="empty-state" id="empty-state">No hay aves con ese nombre. Prueba otra búsqueda.</div>
+    </section>
+  </main>
+
+  <footer class="shell footer">
+    <span>OBSERVAR · ESCUCHAR · CUIDAR</span>
+    <span>Una guía para paseos urbanos en Madrid</span>
+  </footer>
+
+  <dialog id="bird-dialog" aria-labelledby="dialog-name">
+    <div class="dialog-content">
+      <img class="dialog-image" id="dialog-image" src="" alt="">
+      <div class="dialog-body">
+        <div class="dialog-top">
+          <div>
+            <h2 id="dialog-name"></h2>
+            <p class="dialog-latin" id="dialog-latin"></p>
+          </div>
+          <button class="close-dialog" type="button" aria-label="Cerrar">×</button>
+        </div>
+        <p class="dialog-description" id="dialog-description"></p>
+        <div class="detail-row">
+          <div>
+            <small>Hábitat</small>
+            <span id="dialog-habitat"></span>
+          </div>
+          <div>
+            <small>Cuándo verla</small>
+            <span id="dialog-season"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
